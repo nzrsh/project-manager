@@ -1,0 +1,16 @@
+venv/
+.env/
+
+.vscode/
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.log
+*.tmp
+*.swp
+*.swo
+
+node_modules/
+dist/
