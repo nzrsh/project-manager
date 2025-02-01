@@ -1,0 +1,1 @@
+from .projects import create_project  # Импорт CRUD-функции
