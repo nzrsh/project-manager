@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
 from sqlmodel import Session, select
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List
@@ -9,29 +9,20 @@ from app.crud.projects import create_project, get_projects, get_project_by_id, u
 
 router = APIRouter(tags=["Проекты"])
 
-# Создание проекта
-@router.post("/projects/", response_model=ProjectRead)
-def create_new_project(project: ProjectCreate, db: Session = Depends(get_db)):
-    """
-    Тут описание
-    ***описание 1***
-    """
-    try:
-        return create_project(db, project)
-    except SQLAlchemyError as e:
-        print(f"Ошибка при создании проекта: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Не удалось создать проект из-за ошибки базы данных.",
-        )
-
 # Получение списка проектов
-@router.get("/projects/", summary="Get a list of items", description="This endpoint returns a list of items.", response_model=list[ProjectRead])
+@router.get(
+    "/projects/",
+    summary="Получение списка проектов",
+    description="Возвращает список проектов с возможностью пагинации. "
+                "Используйте параметры `skip` и `limit` для управления количеством возвращаемых записей.",
+    response_model=List[ProjectRead],
+    response_description="Список проектов",
+)
 def read_projects(
-    skip: int = Query(0, description="Number of items to skip"),
-    limit: int = Query(10, description="Number of items to return"),
-    db: Session = Depends(get_db)
-    ):
+    skip: int = Query(0, description="Количество пропущенных записей (пагинация)"),
+    limit: int = Query(10, description="Количество возвращаемых записей (пагинация)"),
+    db: Session = Depends(get_db),
+):
     try:
         projects = get_projects(db, skip=skip, limit=limit)
         return projects
@@ -43,8 +34,17 @@ def read_projects(
         )
 
 # Получение проекта по ID
-@router.get("/projects/{project_id}", response_model=ProjectRead)
-def read_project(project_id: int, db: Session = Depends(get_db)):
+@router.get(
+    "/projects/{project_id}",
+    summary="Получение проекта по его ID",
+    description="Возвращает проект по его идентификатору. Если проект не найден, возвращает ошибку 404.",
+    response_model=ProjectRead,
+    response_description="Запрошенный проект",
+)
+def read_project(
+    project_id: int = Path(..., description="Идентификатор запрашиваемого проекта"),
+    db: Session = Depends(get_db),
+):
     try:
         project = get_project_by_id(db, project_id)
         if not project:
@@ -60,9 +60,39 @@ def read_project(project_id: int, db: Session = Depends(get_db)):
             detail="Не удалось получить проект из-за ошибки базы данных.",
         )
 
+# Создание проекта
+@router.post(
+    "/projects/",
+    summary="Создание проекта",
+    description="Создает новый проект на основе переданных данных. Возвращает созданный проект.",
+    response_model=ProjectRead,
+    response_description="Созданный проект",
+)
+def create_new_project(
+    project: ProjectCreate,
+    db: Session = Depends(get_db),
+):
+    try:
+        return create_project(db, project)
+    except SQLAlchemyError as e:
+        print(f"Ошибка при создании проекта: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Не удалось создать проект из-за ошибки базы данных.",
+        )
+
 # Удаление проекта по ID
-@router.delete("/projects/{project_id}", response_model=ProjectRead)
-def delete_project(project_id: int, db: Session = Depends(get_db)):
+@router.delete(
+    "/projects/{project_id}",
+    summary="Удаление проекта по ID",
+    description="Удаляет проект по его идентификатору. Если проект не найден, возвращает ошибку 404.",
+    response_model=ProjectRead,
+    response_description="Удаленный проект",
+)
+def delete_project(
+    project_id: int = Path(..., description="Идентификатор удаляемого проекта"),
+    db: Session = Depends(get_db),
+):
     try:
         project = delete_project_by_id(db, project_id)
         if not project:
@@ -79,10 +109,17 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
         )
 
 # Обновление проекта по ID
-@router.patch("/projects/{project_id}", response_model=ProjectRead)
-
+@router.patch(
+    "/projects/{project_id}",
+    summary="Обновление проекта по ID",
+    description="Обновляет данные проекта по его идентификатору. Если проект не найден, возвращает ошибку 404.",
+    response_model=ProjectRead,
+    response_description="Обновленный проект",
+)
 def update_project(
-    project_id: int, project: ProjectUpdate, db: Session = Depends(get_db)
+    project_id: int = Path(..., description="Идентификатор проекта, который нужно обновить"),
+    project: ProjectUpdate = Body(..., description="Данные для обновления проекта"),
+    db: Session = Depends(get_db),
 ):
     try:
         updated_project = update_project_by_id(db, project_id, project)

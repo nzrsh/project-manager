@@ -4,7 +4,7 @@ import uvicorn
 from app.api.projects import router as projects_router 
 from app.database import engine 
 
-app = FastAPI( title="API сервер для Менеджера Проектов",
+app = FastAPI( title="Мененджер проектов",
     description="API сервер, предоставляющий функционал управления проектами и их процессами",
     version="0.0.1",
     contact={
