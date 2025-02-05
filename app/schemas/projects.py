@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 from datetime import datetime, timezone
 
 class ProjectCreate(BaseModel):
@@ -24,6 +24,11 @@ class ProjectRead(BaseModel):
     createdAt: datetime
     updatedAt: datetime
     processes: Optional[List[ProcessRead]] = None
+
+    #Кастомный сериализатор для времени
+    @field_serializer('createdAt', 'updatedAt')
+    def serialize_datetime(self, dt: datetime) -> str:
+        return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 class ProcessUpdateState(BaseModel):
     is_active: bool  # Новое состояние процесса (включен/выключен)
