@@ -1,20 +1,30 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Depends
 from sqlmodel import SQLModel
 import uvicorn
-from app.api.projects import router as projects_router 
-from app.database import engine 
+from app.api.projects import router as projects_router
+from app.database import engine, init_db  # Импортируем асинхронный движок и init_db
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
+from app.config.config import Settings
 
+# Используем lifespan для асинхронного создания таблиц при старте приложения
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()  # Инициализируем БД при старте
+    yield
 
-app = FastAPI( title="Мененджер проектов",
+app = FastAPI(
+    title="Менеджер проектов",
     description="API сервер, предоставляющий функционал управления проектами и их процессами",
-    version="0.0.1",
+    version="0.0.2",
     contact={
         "name": "nzrsh",
         "email": "thelithium02@gmail.com",
     },
-    )
+    lifespan=lifespan,  # Асинхронная инициализация с помощью lifespan
+)
 
+# Подключаем маршруты для работы с проектами
 app.include_router(projects_router, prefix="/api")
 
 # Добавляем middleware для CORS
@@ -26,7 +36,5 @@ app.add_middleware(
     allow_headers=["*"],  # Разрешенные заголовки
 )
 
-SQLModel.metadata.create_all(engine)
-
 if __name__ == "__main__":
-    uvicorn.run("main:app")
+    uvicorn.run("main:app", reload=True)
