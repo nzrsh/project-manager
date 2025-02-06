@@ -6,7 +6,6 @@ class ProjectCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=100)
     description: str = Field(..., min_length=1, max_length=500)
 
-
 class ProjectUpdate(BaseModel):
     title: Optional[str] = Field(None, min_length=1, max_length=100)
     description: Optional[str] = Field(None, min_length=1, max_length=500)
@@ -21,9 +20,9 @@ class ProjectRead(BaseModel):
     id: int
     title: str
     description: str
-    createdAt: datetime
-    updatedAt: datetime
-    processes: Optional[List[ProcessRead]] = None
+    createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    processes: Optional[List[ProcessRead]] = Field(default_factory=list)
 
     #Кастомный сериализатор для времени
     @field_serializer('createdAt', 'updatedAt')
