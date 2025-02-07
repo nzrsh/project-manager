@@ -4,6 +4,7 @@ import { useCreateProject } from "../hooks/useCreateProject";
 import { useUpdateProject } from "../hooks/useUpdateProject";
 import { useDeleteProject } from "../hooks/useDeleteProject";
 import { Project } from "../types";
+import ProjectCard from "./ProjectCard";
 
 const ProjectsList = () => {
   const { data: projects, isLoading, error, isError } = useProjectsQuery();
@@ -99,11 +100,11 @@ const ProjectsList = () => {
       <ul>
         {projects?.map((project) => (
           <li key={project.id}>
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
-            <p>Процессов: {project.processes.length}</p>
-            <button onClick={() => handleEdit(project)}>Редактировать</button>
-            <button onClick={() => handleDelete(project.id)}>Удалить</button>
+            <ProjectCard
+              project={project}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
           </li>
         ))}
       </ul>

@@ -19,8 +19,8 @@ export interface CreateProjectInput {
     description: string;
   }
 
-  export interface UpdateProjectInput {
+export interface UpdateProjectInput {
     title?: string;
     description?: string;
-  }
+}
   
