@@ -33,4 +33,4 @@ class ProcessUpdateState(BaseModel):
     is_active: bool  # Новое состояние процесса (включен/выключен)
 
 class ProcessUpdateStage(BaseModel):
-    state_stage: int = Field(ge=0, le=3, description="Этап состояния (от 0 до 3)")
+    state_stage: int = Field(ge=0, le=4, description="Этап состояния (от 0 до 4)")
