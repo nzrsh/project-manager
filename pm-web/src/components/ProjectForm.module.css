@@ -1,0 +1,89 @@
+.formContainer {
+  width: 50%;
+  height: 100%;
+  padding: 5px;
+  overflow-y: auto;
+  margin: 0;
+  margin-left: 5px;
+}
+
+.formContainer form {
+  padding-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  height: 30%;
+  width: 100%;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.processContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Два столбца */
+  grid-template-rows: repeat(2, 1fr); /* Две строки */
+  gap: 15px; /* Минимальное расстояние между элементами */
+}
+
+.ProcessItem {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding-top: 5px;
+}
+
+.StageList {
+  padding-left: 1rem;
+}
+.StageList li {
+  display: flex;
+  align-items: center; /* Выравниваем элементы по центру */
+  gap: 8px; /* Добавляем отступ между радио-кнопкой и текстом */
+  font-size: 0.75rem;
+  margin-bottom: 0.4rem; /* Отступ между строками */
+}
+
+input[type="radio"] {
+  width: 0.75rem;
+  height: 0.75rem;
+  margin: 0; /* Убираем отступы у радио-кнопки */
+}
+
+label,
+span {
+  margin: 0; /* Убираем отступы у текста */
+}
+
+.projectTimestamp {
+  display: flex;
+  gap: 10px; /* Отступ между метками */
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+}
+
+.projectTimestamp span {
+  padding: 8px 12px; /* Внутренние отступы */
+  border-radius: 4px; /* Скругление углов */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+  border: 1px solid #eee; /* Граница */
+}
+
+.projectTimestamp span strong {
+  color: #007bff; /* Акцентный цвет для даты и времени */
+  font-weight: 500;
+}

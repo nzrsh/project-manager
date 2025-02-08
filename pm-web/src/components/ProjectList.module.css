@@ -1,0 +1,81 @@
+.mainContainer {
+  display: flex;
+  justify-content: space-between; /* Распределяет пространство между элементами */
+  align-items: center; /* Выравнивает элементы по вертикали */
+  width: 90vw; /* Ширина контейнера */
+  height: 90vh; /* Ширина контейнера */
+  border: 3px solid #30363d;
+  border-radius: 6px;
+  padding: 5px;
+}
+
+.mainHeader {
+  text-align: center;
+}
+
+.projectList {
+  border-right: 1px solid #30363d;
+  padding: 10px;
+  width: 50%;
+  height: 100%;
+  padding: 5px;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+
+.projectList ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.projectList ul li {
+  width: 100%;
+}
+
+.searchAndCreateContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-top: 5px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.createButton {
+  background-color: #28a745; /* Зелёный цвет, как на GitHub */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createButton:hover {
+  background-color: #218838; /* Темнее при наведении */
+}
+
+.projectFormContainer {
+  margin-bottom: 20px;
+}
+
+.projectList {
+  flex: 1;
+}
+
+.projectItem {
+  margin-bottom: 10px;
+}
+

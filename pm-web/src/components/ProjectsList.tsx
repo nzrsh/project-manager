@@ -3,25 +3,25 @@ import { useProjectsQuery } from "../hooks/useProjectsQuery";
 import { useCreateProject } from "../hooks/useCreateProject";
 import { useUpdateProject } from "../hooks/useUpdateProject";
 import { useDeleteProject } from "../hooks/useDeleteProject";
+import styles from "./ProjectList.module.css";
 import { Project } from "../types";
 import ProjectCard from "./ProjectCard";
+import ProjectForm from "./ProjectForm";
 
 const ProjectsList = () => {
   const { data: projects, isLoading, error, isError } = useProjectsQuery();
   const createProjectMutation = useCreateProject();
   const updateProjectMutation = useUpdateProject();
   const deleteProjectMutation = useDeleteProject();
-
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [editProjectId, setEditProjectId] = useState<number | null>(null); // ID проекта для редактирования
+  const [editProjectId, setEditProjectId] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Состояние для поиска
+  const [isCreatingProject, setIsCreatingProject] = useState(false); // Состояние для создания проекта
 
-  // Обработка отправки формы
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
     if (editProjectId !== null) {
-      // Если редактируем проект
       updateProjectMutation.mutate(
         {
           id: editProjectId,
@@ -32,14 +32,13 @@ const ProjectsList = () => {
         },
         {
           onSuccess: () => {
-            setProjectTitle(""); // Очищаем поля
+            setProjectTitle("");
             setProjectDescription("");
-            setEditProjectId(null); // Выходим из режима редактирования
+            setEditProjectId(null);
           },
         }
       );
     } else {
-      // Если создаём новый проект
       createProjectMutation.mutate(
         {
           title: projectTitle,
@@ -47,7 +46,7 @@ const ProjectsList = () => {
         },
         {
           onSuccess: () => {
-            setProjectTitle(""); // Очищаем поля
+            setProjectTitle("");
             setProjectDescription("");
           },
         }
@@ -55,14 +54,12 @@ const ProjectsList = () => {
     }
   };
 
-  // Обработка редактирования проекта
   const handleEdit = (project: Project) => {
     setProjectTitle(project.title);
     setProjectDescription(project.description);
-    setEditProjectId(project.id); // Устанавливаем ID проекта для редактирования
+    setEditProjectId(project.id);
   };
 
-  // Обработка удаления проекта
   const handleDelete = (projectId: number) => {
     if (
       window.confirm(
@@ -75,41 +72,74 @@ const ProjectsList = () => {
     }
   };
 
-  // Состояния загрузки и ошибок
+  const handleProjectTitleChange = (newTitle: string) => {
+    setProjectTitle(newTitle);
+  };
+
+  const handleProjectDescriptionChange = (newDescription: string) => {
+    setProjectDescription(newDescription);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   if (isLoading) return <p>Загрузка...</p>;
   if (isError) return <p>Ошибка! {(error as any)?.message}</p>;
 
+  const currentProject =
+    editProjectId !== null
+      ? projects?.find((p) => p.id === editProjectId) || null
+      : null;
+
+  const filteredProjects = projects?.filter((project) =>
+    project.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <div>
-      <h2>Список проектов</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Название проекта"
-          value={projectTitle}
-          onChange={(e) => setProjectTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Описание"
-          value={projectDescription}
-          onChange={(e) => setProjectDescription(e.target.value)}
-        />
-        <button type="submit">{editProjectId ? "Обновить" : "Создать"}</button>
-      </form>
-      <ul>
-        {projects?.map((project) => (
-          <li key={project.id}>
-            <ProjectCard
-              project={project}
-              handleEdit={handleEdit}
-              handleDelete={handleDelete}
+      <div className={styles.mainContainer}>
+        <div className={styles.projectList}>
+          <div className={styles.searchAndCreateContainer}>
+            <input
+              type="text"
+              placeholder="Поиск проектов..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className={styles.searchInput}
             />
-          </li>
-        ))}
-      </ul>
+          </div>
+
+          {/* Форма для создания/редактирования проекта
+          {isCreatingProject && (
+            <div className={styles.projectFormContainer}>
+              <ProjectForm />
+            </div>
+          )} */}
+          <ul>
+            {filteredProjects?.map((project) => (
+              <li key={project.id} className={styles.projectItem}>
+                <ProjectCard
+                  project={project}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ProjectForm />
+      </div>
     </div>
   );
 };
 
 export default ProjectsList;
+
+/*<ProjectForm
+handleSubmit={handleSubmit}
+project={currentProject}
+handleProjectTitleChange={handleProjectTitleChange}
+handleProjectDescriptionChange={handleProjectDescriptionChange}
+editProjectId={editProjectId}
+/>*/

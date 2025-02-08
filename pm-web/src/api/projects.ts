@@ -5,7 +5,7 @@ const API_PROCESS_URL = "http://localhost:8000/api/processes"
 
 export const fetchProjects = async (): Promise<Project[]> => {
     try {
-        const response = await fetch(API_PROJECT_URL);
+        const response = await fetch(`${API_PROJECT_URL}?limit=50`);
         if (!response.ok) {
             throw new Error("Ошибка при получении проектов");
         }

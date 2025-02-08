@@ -52,12 +52,10 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
   useEffect(setInitialIndex, []);
 
   return (
-    <>
-      <h3>
-        {process.id} {process.title} {process.state_stage}
-      </h3>
+    <div>
+      {process.title}
       <button onClick={handleProcessStateClick}>
-        {processState ? "Выключить" : "Включить"}{" "}
+        {processState ? "Выключить" : "Включить"}
       </button>
       <ol>
         {stages.map((stage, index) => (
@@ -81,7 +79,7 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
           </li>
         ))}
       </ol>
-    </>
+    </div>
   );
 };
 
