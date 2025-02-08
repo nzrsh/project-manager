@@ -23,4 +23,12 @@ export interface UpdateProjectInput {
     title?: string;
     description?: string;
 }
-  
+
+export interface UpdateProcessStageInput {
+  state_stage: number;
+}
+
+export interface UpdateProcessStateInput {
+  is_active: boolean;
+}
+export const stages: string[] = ["Простой", "В работе", "Завершён", "Проверен"]

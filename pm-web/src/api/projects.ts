@@ -1,10 +1,11 @@
-import {Project, CreateProjectInput, UpdateProjectInput } from "../types/index"
+import {Project, CreateProjectInput, UpdateProjectInput, Process, UpdateProcessStageInput, UpdateProcessStateInput } from "../types/index"
 
-const API_URL = "http://localhost:8000/api/projects"
+const API_PROJECT_URL = "http://localhost:8000/api/projects"
+const API_PROCESS_URL = "http://localhost:8000/api/processes"
 
 export const fetchProjects = async (): Promise<Project[]> => {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_PROJECT_URL);
         if (!response.ok) {
             throw new Error("Ошибка при получении проектов");
         }
@@ -17,7 +18,7 @@ export const fetchProjects = async (): Promise<Project[]> => {
 
 
 export const createProject = async (newProject: CreateProjectInput): Promise<Project> => {
-    const response = await fetch(API_URL, {
+    const response = await fetch(API_PROJECT_URL, {
         method: 'POST',
         headers: {
             'Content-Type':"application/json"
@@ -34,7 +35,7 @@ export const updateProject = async (
     id: number,
     updatedData: UpdateProjectInput // Только обновляемые поля
   ): Promise<Project> => {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_PROJECT_URL}/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +50,7 @@ export const updateProject = async (
     return response.json();
   };
   export const deleteProject = async (id: number): Promise<void> => {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_PROJECT_URL}/${id}`, {
       method: "DELETE",
     });
   
@@ -57,3 +58,39 @@ export const updateProject = async (
       throw new Error("Ошибка при удалении проекта");
     }
   };
+
+export const updateProcessStage = async (
+  id: number,
+  newStage: UpdateProcessStageInput
+): Promise<Process> => {
+  const response = await fetch(`${API_PROCESS_URL}/${id}/stage`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newStage)
+  });
+  if (!response.ok) {
+    throw new Error("Ошибка при обновлении стадии процесса");
+  }
+
+  return response.json();
+}
+
+export const updateProcessState = async (
+  id: number,
+  newState: UpdateProcessStateInput
+): Promise<Process> => {
+  const response = await fetch(`${API_PROCESS_URL}/${id}/state`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newState)
+  });
+  if (!response.ok) {
+    throw new Error("Ошибка при обновлении состояния процесса");
+  }
+
+  return response.json();
+}
