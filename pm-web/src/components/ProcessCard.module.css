@@ -1,0 +1,81 @@
+.ProcessItem {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding-top: 5px;
+  }
+
+  .toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 36px; /* Уменьшаем ширину */
+    height: 18px; /* Уменьшаем высоту */
+  }
+  
+  .toggleSwitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #484f58; /* Цвет фона в выключенном состоянии */
+    border: 1px solid #30363d; /* Граница */
+    border-radius: 18px; /* Закругление (половина высоты) */
+    transition: all 0.3s ease; /* Плавная анимация */
+  }
+  
+  .slider::before {
+    content: "";
+    position: absolute;
+    left: 1px; /* Уменьшаем отступ слева */
+    top: 50%; /* Выравниваем по вертикали */
+    transform: translateY(-50%); /* Центрируем по вертикали */
+    width: 14px; /* Уменьшаем размер круга */
+    height: 14px; /* Уменьшаем размер круга */
+    background-color: #c9d1d9; /* Цвет круга в выключенном состоянии */
+    border-radius: 50%; /* Круглый индикатор */
+    transition: all 0.3s ease; /* Плавная анимация */
+  }
+  
+  input:checked + .slider {
+    background: linear-gradient(
+      135deg,
+      #2ea043,
+      #1f883d
+    ); /* Градиент в активном состоянии */
+    border-color: #2ea043; /* Граница в активном состоянии */
+  }
+  
+  input:checked + .slider::before {
+    transform: translate(
+      18px,
+      -50%
+    ); /* Перемещение круга вправо и центрирование по вертикали */
+    background-color: #ffffff; /* Цвет круга в активном состоянии */
+  }
+  
+  .StageList {
+    padding-left: 1rem;
+  }
+  .StageList li {
+    display: flex;
+    align-items: center; /* Выравниваем элементы по центру */
+    gap: 8px; /* Добавляем отступ между радио-кнопкой и текстом */
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem; /* Отступ между строками */
+  }
+  
+  input[type="radio"] {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin: 0; /* Убираем отступы у радио-кнопки */
+  }

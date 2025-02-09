@@ -2,11 +2,12 @@
   display: flex;
   justify-content: space-between; /* Распределяет пространство между элементами */
   align-items: center; /* Выравнивает элементы по вертикали */
-  width: 90vw; /* Ширина контейнера */
-  height: 90vh; /* Ширина контейнера */
+  width: 95vw; /* Ширина контейнера */
+  height: 95vh; /* Ширина контейнера */
   border: 3px solid #30363d;
   border-radius: 6px;
   padding: 5px;
+  box-sizing: border-box;
 }
 
 .mainHeader {
@@ -38,7 +39,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
-  padding-top: 5px;
+  padding-top: 15px;
 }
 
 .searchInput {
@@ -78,4 +79,3 @@
 .projectItem {
   margin-bottom: 10px;
 }
-

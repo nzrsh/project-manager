@@ -7,13 +7,19 @@
   margin-left: 5px;
 }
 
+.createForm {
+  border-bottom: 3px solid #30363d;
+  padding-bottom: 15px;
+  margin-bottom: 0px;
+}
+
 .formContainer form {
-  padding-top: 5px;
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 5px; /* Отступ между элементами */
   margin: 0;
-  height: 30%;
+  height: auto; /* Убираем фиксированную высоту */
   width: 100%;
 }
 
@@ -38,30 +44,14 @@ textarea {
   gap: 15px; /* Минимальное расстояние между элементами */
 }
 
-.ProcessItem {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding-top: 5px;
-}
 
-.StageList {
-  padding-left: 1rem;
-}
-.StageList li {
-  display: flex;
-  align-items: center; /* Выравниваем элементы по центру */
-  gap: 8px; /* Добавляем отступ между радио-кнопкой и текстом */
-  font-size: 0.75rem;
-  margin-bottom: 0.4rem; /* Отступ между строками */
-}
 
-input[type="radio"] {
-  width: 0.75rem;
-  height: 0.75rem;
-  margin: 0; /* Убираем отступы у радио-кнопки */
+
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #58a6ff;
+  box-shadow: 0 0 4px rgba(88, 166, 255, 0.5);
 }
 
 label,
@@ -87,3 +77,60 @@ span {
   color: #007bff; /* Акцентный цвет для даты и времени */
   font-weight: 500;
 }
+
+button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Контейнер для кнопок */
+.buttonContainer {
+  display: flex;
+  gap: 15px; /* Расстояние между кнопками */
+  margin-top: 10px; /* Отступ сверху */
+  margin-bottom: 10px;
+}
+
+/* Стили для кнопок */
+.buttonContainer button {
+  flex: 1; /* Кнопки занимают равное пространство */
+  padding: 10px; /* Внутренние отступы */
+  border: none; /* Убираем границы */
+  border-radius: 4px; /* Закругление углов */
+  font-size: 1rem; /* Размер текста */
+  cursor: pointer; /* Указатель мыши */
+  transition: background-color 0.3s ease; /* Плавное изменение цвета */
+  text-align: center; /* Выравнивание текста по центру */
+}
+
+/* Кнопка "Сохранить" */
+.buttonContainer .saveButton {
+  background-color: #0969da; /* Зелёный цвет */
+  color: white;
+}
+
+.buttonContainer .saveButton:hover {
+  background-color: #085cc7; /* Темнее при наведении */
+}
+
+/* Кнопка "Удалить" */
+.buttonContainer .deleteButton {
+  background-color: #cf222e; /* Красный цвет */
+  color: white;
+}
+
+.buttonContainer .deleteButton:hover {
+  background-color: #bb1d26; /* Темнее при наведении */
+}
+
+.createButton {
+  background-color: #2da44e;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+.createButton:hover {
+  background-color: #2c974b;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
