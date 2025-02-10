@@ -52,7 +52,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     <div className={styles.formContainer}>
       {/* Форма создания проекта */}
       <CreateProjectForm
-        onSubmit={onSubmitCreate} // Передаём колбэк из родительского компонента
+        onSubmit={onSubmitCreate} 
         projectNewTitle={projectNewTitle}
         projectNewDescription={projectNewDescription}
         onNewTitleChange={onNewTitleChange}
@@ -62,14 +62,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
       {/* Форма редактирования проекта */}
       {editProjectId !== null && currentProject && (
         <EditProjectForm
-          onSubmit={onSubmitUpdate} // Передаём колбэк из родительского компонента
+          onSubmit={onSubmitUpdate} 
           projectTitle={projectTitle}
           projectDescription={projectDescription}
           onTitleChange={onTitleChange}
           onDescriptionChange={onDescriptionChange}
           createdAt={currentProject.createdAt}
           updatedAt={currentProject.updatedAt}
-          onDelete={handleOpenDeleteModal} // Открываем модальное окно при нажатии на удаление
+          onDelete={handleOpenDeleteModal} 
           processes={currentProject.processes}
         />
       )}
@@ -85,7 +85,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
         }}
         onCancel={handleCloseDeleteModal}
         confirmButtonText="Удалить"
-        isDelete={true} // Указываем, что это окно удаления
+        isDelete={true} 
       />
     </div>
   );

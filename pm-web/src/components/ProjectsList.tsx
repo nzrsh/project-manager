@@ -137,7 +137,7 @@ const ProjectsList = () => {
         title="Успешно!"
         message={notificationMessage}
         onCancel={() => setIsNotificationModalOpen(false)}
-        showConfirmButton={false} // Отключаем кнопку "Подтвердить"
+        showConfirmButton={false} 
       />
 
       <div className={styles.mainContainer}>
