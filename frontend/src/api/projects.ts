@@ -1,7 +1,9 @@
 import {Project, CreateProjectInput, UpdateProjectInput, Process, UpdateProcessStageInput, UpdateProcessStateInput } from "../types/index"
 
-const API_PROJECT_URL = "http://localhost:8000/api/projects"
-const API_PROCESS_URL = "http://localhost:8000/api/processes"
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+const API_PROJECT_URL = `${apiUrl}/projects`
+const API_PROCESS_URL = `${apiUrl}/processes`
 
 
 // Получение списка проектов
