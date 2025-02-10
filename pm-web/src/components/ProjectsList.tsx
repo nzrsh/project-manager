@@ -7,63 +7,55 @@ import styles from "./styles/ProjectList.module.css";
 import { Project } from "../types";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";
+import Modal from "./ui/Modal"; // Импортируем компонент модального окна
+import Spinner from "./ui/Spinner";
 
 const ProjectsList = () => {
-  //Работа с query
+  // Работа с query
   const { data: projects, isLoading, error, isError } = useProjectsQuery();
   const createProjectMutation = useCreateProject();
   const updateProjectMutation = useUpdateProject();
   const deleteProjectMutation = useDeleteProject();
 
-  //Стейт для редактирования проекта
+  // Состояния для управления формами
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-
-  //Стейт для создания проекта
   const [projectNewTitle, setNewProjectTitle] = useState("");
   const [projectNewDescription, setNewProjectDescription] = useState("");
-
-  //Стейт айди редактируемого проекта
   const [editProjectId, setEditProjectId] = useState<number | null>(null);
-
-  //Стейт инпута для поиска
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Состояния для модальных окон
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  // Обработчик редактирования проекта
   const handleEdit = (project: Project) => {
     setProjectTitle(project.title);
     setProjectDescription(project.description);
     setEditProjectId(project.id);
   };
 
+  // Обработчик удаления проекта
   const handleDelete = (projectId: number) => {
-    if (
-      window.confirm(
-        `Вы уверены, что хотите удалить проект "${
-          projects?.find((p) => p.id === projectId)?.title
-        }"?`
-      )
-    ) {
-      deleteProjectMutation.mutate(projectId, {
-        onSuccess: () => {
-          setEditProjectId(null);
-          setProjectDescription("");
-          setProjectTitle("");
-        },
-      });
-    }
+    deleteProjectMutation.mutate(projectId, {
+      onSuccess: () => {
+        setEditProjectId(null);
+        setProjectDescription("");
+        setProjectTitle("");
+      },
+    });
   };
 
-  //Обработка изменения редактирования
+  // Обработка изменения заголовка и описания
   const handleProjectTitleChange = (newTitle: string) => {
     setProjectTitle(newTitle);
   };
-
-  //Обработка изменения описания
   const handleProjectDescriptionChange = (newDescription: string) => {
     setProjectDescription(newDescription);
   };
 
-  //Обработка ввода в строку поиска
+  // Обработка ввода в строку поиска
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -71,12 +63,11 @@ const ProjectsList = () => {
   const handleNewProjectTitleChange = (newTitle: string) => {
     setNewProjectTitle(newTitle);
   };
-
   const handleNewProjectDescriptionChange = (newDescription: string) => {
     setNewProjectDescription(newDescription);
   };
 
-  // Отдельные обработчики для форм
+  // Обработчик создания проекта
   const handleCreateSubmit = (e: FormEvent) => {
     e.preventDefault();
     createProjectMutation.mutate(
@@ -88,38 +79,67 @@ const ProjectsList = () => {
         onSuccess: () => {
           setNewProjectTitle("");
           setNewProjectDescription("");
+          setNotificationMessage("Проект успешно создан!");
+          setIsNotificationModalOpen(true); // Показываем уведомление
         },
       }
     );
   };
 
+  // Обработчик обновления проекта
   const handleUpdateSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (editProjectId === null) return;
-    updateProjectMutation.mutate({
-      id: editProjectId,
-      data: {
-        title: projectTitle,
-        description: projectDescription,
+    updateProjectMutation.mutate(
+      {
+        id: editProjectId,
+        data: {
+          title: projectTitle,
+          description: projectDescription,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          setNotificationMessage("Проект успешно обновлен!");
+          setIsNotificationModalOpen(true); // Показываем уведомление
+        },
+      }
+    );
   };
 
-  if (isLoading) return <p>Загрузка...</p>;
+  // Загрузка или ошибка
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <Spinner />
+        <p>Загрузка проектов...</p>
+      </div>
+    );
+  }
   if (isError) return <p>Ошибка! {(error as any)?.message}</p>;
 
+  // Текущий проект и фильтрация
   const currentProject =
     editProjectId !== null
       ? projects?.find((p) => p.id === editProjectId) || null
       : null;
-
   const filteredProjects = projects
     ?.filter((project) =>
       project.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .reverse();
+
   return (
     <div>
+      {/* Модальное окно уведомлений */}
+      <Modal
+        isOpen={isNotificationModalOpen}
+        title="Успешно!"
+        message={notificationMessage}
+        onCancel={() => setIsNotificationModalOpen(false)}
+        showConfirmButton={false} // Отключаем кнопку "Подтвердить"
+      />
+
       <div className={styles.mainContainer}>
         <div className={styles.projectList}>
           <div className={styles.searchAndCreateContainer}>
@@ -136,7 +156,9 @@ const ProjectsList = () => {
               <li
                 key={project.id}
                 onClick={() => handleEdit(project)}
-                className={styles.projectItem}
+                className={`${styles.projectItem} ${
+                  editProjectId === project.id ? styles.active : ""
+                }`}
               >
                 <ProjectCard
                   project={project}
@@ -147,7 +169,6 @@ const ProjectsList = () => {
             ))}
           </ul>
         </div>
-
         <ProjectForm
           onSubmitCreate={handleCreateSubmit}
           onSubmitUpdate={handleUpdateSubmit}

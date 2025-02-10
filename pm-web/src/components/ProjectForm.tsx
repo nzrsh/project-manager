@@ -1,7 +1,9 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import styles from "./styles/ProjectForm.module.css";
+import Modal from "./ui/Modal"; // Импортируем компонент модального окна
+import CreateProjectForm from "./CreateProjectForm";
+import EditProjectForm from "./EditProjectForm";
 import { Project } from "../types";
-import ProcessCard from "./ProcessCard";
 
 interface ProjectFormProps {
   onSubmitCreate: (e: FormEvent) => void;
@@ -34,70 +36,57 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
   currentProject,
   onDelete,
 }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Состояние для модального окна удаления
+
+  // Обработчик открытия модального окна удаления
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  // Обработчик закрытия модального окна удаления
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   return (
     <div className={styles.formContainer}>
       {/* Форма создания проекта */}
-      <form onSubmit={onSubmitCreate} className={styles.createForm}>
-        <input
-          type="text"
-          placeholder="Название проекта"
-          value={projectNewTitle}
-          onChange={(e) => onNewTitleChange(e.target.value)}
-        />
-        <textarea
-          placeholder="Описание проекта"
-          value={projectNewDescription}
-          onChange={(e) => onNewDescriptionChange(e.target.value)}
-        />
-        <button type="submit" className={styles.createButton}>
-          Создать
-        </button>
-      </form>
+      <CreateProjectForm
+        onSubmit={onSubmitCreate} // Передаём колбэк из родительского компонента
+        projectNewTitle={projectNewTitle}
+        projectNewDescription={projectNewDescription}
+        onNewTitleChange={onNewTitleChange}
+        onNewDescriptionChange={onNewDescriptionChange}
+      />
 
       {/* Форма редактирования проекта */}
-      {editProjectId !== null && (
-        <form onSubmit={onSubmitUpdate}>
-          <input
-            type="text"
-            placeholder="Название проекта"
-            value={projectTitle}
-            onChange={(e) => onTitleChange(e.target.value)}
-          />
-          <textarea
-            placeholder="Описание проекта"
-            value={projectDescription}
-            onChange={(e) => onDescriptionChange(e.target.value)}
-          />
-
-          <div className={styles.projectTimestamp}>
-            <span>
-              Создан: <strong>{currentProject?.createdAt}</strong>
-            </span>
-            <span>
-              Обновлён в: <strong>{currentProject?.updatedAt}</strong>
-            </span>
-          </div>
-
-          <div className={styles.buttonContainer}>
-            <button className={styles.saveButton} type="submit">
-              Обновить
-            </button>
-            <button
-              type="button"
-              className={styles.deleteButton}
-              onClick={() => onDelete(editProjectId)}
-            >
-              Удалить
-            </button>
-          </div>
-
-          <div className={styles.processContainer}>
-            {currentProject?.processes.map((process) => (
-              <ProcessCard key={process.id} process={process} />
-            ))}
-          </div>
-        </form>
+      {editProjectId !== null && currentProject && (
+        <EditProjectForm
+          onSubmit={onSubmitUpdate} // Передаём колбэк из родительского компонента
+          projectTitle={projectTitle}
+          projectDescription={projectDescription}
+          onTitleChange={onTitleChange}
+          onDescriptionChange={onDescriptionChange}
+          createdAt={currentProject.createdAt}
+          updatedAt={currentProject.updatedAt}
+          onDelete={handleOpenDeleteModal} // Открываем модальное окно при нажатии на удаление
+          processes={currentProject.processes}
+        />
       )}
+
+      {/* Модальное окно для подтверждения удаления */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        title="Подтвердите удаление"
+        message={`Вы уверены, что хотите удалить проект "${currentProject?.title}"?`}
+        onConfirm={() => {
+          onDelete(editProjectId!);
+          handleCloseDeleteModal();
+        }}
+        onCancel={handleCloseDeleteModal}
+        confirmButtonText="Удалить"
+        isDelete={true} // Указываем, что это окно удаления
+      />
     </div>
   );
 };

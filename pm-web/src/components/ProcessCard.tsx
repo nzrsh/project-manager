@@ -14,7 +14,7 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [processState, setProcessState] = useState<boolean>(process.is_active);
 
-  // Обработчик изменения этапа
+
   const handleRadioChange = (index: number) => {
     setSelectedIndex(index);
     updateProcessStage.mutate({
@@ -25,7 +25,7 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
     });
   };
 
-  // Обработчик изменения состояния процесса
+
   const handleProcessStateClick = () => {
     const newState = !processState;
     setProcessState(newState);
@@ -37,24 +37,28 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
     });
   };
 
-  // Устанавливаем начальный этап при монтировании
   useEffect(() => {
     setSelectedIndex(process.state_stage);
   }, [process.state_stage]);
 
   return (
     <div className={styles.ProcessItem}>
-      <label className={styles.toggleSwitch}>
-        <input
-          type="checkbox"
-          checked={processState}
-          onChange={handleProcessStateClick}
-        />
-        <span className={styles.slider}></span>
-      </label>
-      <span>
-        <strong>{process.title} </strong>
+
+      <span className={styles.ProcessSwitch}>
+        <label className={styles.toggleSwitch}>
+          <input
+            type="checkbox"
+            checked={processState}
+            onChange={handleProcessStateClick}
+          />
+          <span className={styles.slider}></span>
+        </label>
       </span>
+
+
+      <strong>{process.title}</strong>
+
+
       <ul className={styles.StageList}>
         {stages.map((stage, index) => {
           const uniqueId = `${process.id}-${index}`;
@@ -62,7 +66,7 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
             <li
               key={index}
               className={selectedIndex === index ? styles.selected : ""}
-              onClick={() => handleRadioChange(index)} // Обработчик клика на весь элемент
+              onClick={() => handleRadioChange(index)} 
             >
               <input
                 type="radio"
@@ -70,7 +74,7 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
                 id={uniqueId}
                 checked={selectedIndex === index}
                 onChange={() => {}}
-                style={{ display: "none" }} // Скрываем радио-кнопку
+                style={{ display: "none" }} 
               />
               <label htmlFor={uniqueId}>{stage}</label>
             </li>

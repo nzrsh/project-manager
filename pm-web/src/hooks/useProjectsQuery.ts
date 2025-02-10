@@ -7,7 +7,7 @@ export const useProjectsQuery = () => {
         queryFn: fetchProjects,
         staleTime: 1000 * 60 * 5, // 5 минут
         placeholderData: (previousData) => previousData, // Сохранять предыдущие данные
-        refetchOnWindowFocus: true, // Повторно запрашивать данные при фокусировке на окне
+        refetchOnWindowFocus: false, // Повторно запрашивать данные при фокусировке на окне
     });
 };
 

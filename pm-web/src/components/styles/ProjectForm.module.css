@@ -17,9 +17,9 @@
   padding-top: 15px;
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Отступ между элементами */
+  gap: 5px; 
   margin: 0;
-  height: auto; /* Убираем фиксированную высоту */
+  height: auto; 
   width: 100%;
 }
 
@@ -39,14 +39,10 @@ textarea {
 
 .processContainer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Два столбца */
-  grid-template-rows: repeat(2, 1fr); /* Две строки */
-  gap: 15px; /* Минимальное расстояние между элементами */
+  grid-template-columns: repeat(2, 1fr); 
+  grid-template-rows: repeat(2, 1fr); 
+  gap: 15px; 
 }
-
-
-
-
 
 input[type="text"]:focus {
   outline: none;
@@ -56,76 +52,85 @@ input[type="text"]:focus {
 
 label,
 span {
-  margin: 0; /* Убираем отступы у текста */
+  margin: 0; 
 }
 
 .projectTimestamp {
   display: flex;
-  gap: 10px; /* Отступ между метками */
+  gap: 10px; 
   font-size: 0.875rem;
   margin-bottom: 5px;
 }
 
 .projectTimestamp span {
-  padding: 8px 12px; /* Внутренние отступы */
-  border-radius: 4px; /* Скругление углов */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
-  border: 1px solid #eee; /* Граница */
+  padding: 8px 12px; 
+  border-radius: 4px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #eee; 
 }
 
 .projectTimestamp span strong {
-  color: #007bff; /* Акцентный цвет для даты и времени */
+  color: #007bff; 
   font-weight: 500;
 }
 
 button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-/* Контейнер для кнопок */
+
 .buttonContainer {
   display: flex;
-  gap: 15px; /* Расстояние между кнопками */
-  margin-top: 10px; /* Отступ сверху */
+  gap: 15px; 
+  margin-top: 10px; 
   margin-bottom: 10px;
 }
 
-/* Стили для кнопок */
+
 .buttonContainer button {
-  flex: 1; /* Кнопки занимают равное пространство */
-  padding: 10px; /* Внутренние отступы */
-  border: none; /* Убираем границы */
-  border-radius: 4px; /* Закругление углов */
-  font-size: 1rem; /* Размер текста */
-  cursor: pointer; /* Указатель мыши */
-  transition: background-color 0.3s ease; /* Плавное изменение цвета */
-  text-align: center; /* Выравнивание текста по центру */
+  flex: 1; 
+  padding: 10px; 
+  border: none; 
+  border-radius: 4px; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  text-align: center; 
 }
 
-/* Кнопка "Сохранить" */
+
 .buttonContainer .saveButton {
-  background-color: #0969da; /* Зелёный цвет */
-  color: white;
+  font-size: 1rem;
+  border: 1px solid #0969da;
+  background-color: #212830;
+  color: #0969da;
 }
 
 .buttonContainer .saveButton:hover {
-  background-color: #085cc7; /* Темнее при наведении */
-}
-
-/* Кнопка "Удалить" */
-.buttonContainer .deleteButton {
-  background-color: #cf222e; /* Красный цвет */
+  background-color: #085cc7; 
   color: white;
 }
 
+
+.buttonContainer .deleteButton {
+  font-size: 1rem;
+  border: 1px solid #cf222e;
+  background-color: #212830; 
+  color: #cf222e;
+}
+
 .buttonContainer .deleteButton:hover {
-  background-color: #bb1d26; /* Темнее при наведении */
+  background-color: #bb1d26;
+  color: white; 
 }
 
 .createButton {
-  background-color: #2da44e;
+  border: 1px solid #2da44e;
+  background-color: #212830;
   font-size: 1rem;
   border-radius: 6px;
+  color: #2da44e;
 }
 
 .createButton:hover {
@@ -133,4 +138,3 @@ button {
   font-size: 1rem;
   border-radius: 6px;
 }
-

@@ -1,13 +1,14 @@
 .mainContainer {
   display: flex;
-  justify-content: space-between; /* Распределяет пространство между элементами */
-  align-items: center; /* Выравнивает элементы по вертикали */
-  width: 95vw; /* Ширина контейнера */
-  height: 95vh; /* Ширина контейнера */
+  justify-content: space-between; 
+  align-items: center; 
+  width: 95vw; 
+  height: 95vh; 
   border: 3px solid #30363d;
   border-radius: 6px;
   padding: 5px;
   box-sizing: border-box;
+  background-color: #010409;
 }
 
 .mainHeader {
@@ -51,7 +52,7 @@
 }
 
 .createButton {
-  background-color: #28a745; /* Зелёный цвет, как на GitHub */
+  background-color: #28a745; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -65,7 +66,7 @@
 }
 
 .createButton:hover {
-  background-color: #218838; /* Темнее при наведении */
+  background-color: #218838; 
 }
 
 .projectFormContainer {
@@ -78,4 +79,44 @@
 
 .projectItem {
   margin-bottom: 10px;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s ease; 
+}
+
+.projectItem:hover {
+  border-color: #58a6ff; 
+  box-shadow: 0 0 4px rgba(88, 166, 255, 0.5); 
+  border-radius: 4px;
+}
+
+.projectItem.active {
+  border: 2px solid #58a6ff; 
+  border-radius: 6px; 
+  outline: none;
+  box-shadow: 0 0 8px rgba(88, 166, 255, 0.7); 
+  transform: scaleY(1.2); 
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  color: #c9d1d9;
+  margin-top: 50%;
+}
+
+.errorCard {
+  background-color: #da3633; 
+  color: #ffffff;
+  padding: 16px;
+  border-radius: 4px;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 400px;
 }

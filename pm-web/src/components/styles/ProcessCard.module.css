@@ -1,16 +1,21 @@
 .ProcessItem {
+  position: relative; 
   display: flex;
   flex-direction: column;
   text-align: center;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding-top: 5px;
+  padding: 10px; 
+}
+
+
+.ProcessSwitch {
+  position: absolute; 
+  top: 10px; 
+  left: 10px; 
 }
 
 .toggleSwitch {
-  margin-left: 10px;
-  margin-top: 10px;
-  position: relative;
   display: inline-block;
   width: 36px;
   height: 18px;
@@ -58,42 +63,48 @@ input:checked + .slider::before {
   background-color: #ffffff;
 }
 
+
+.ProcessItem strong {
+  margin-top: 10px; 
+  display: block; 
+  text-align: center; 
+}
+
 .StageList {
   display: grid;
   grid-template-columns: repeat(
     2,
     auto
-  ); /* Автоматическая ширина для колонок */
-  gap: 16px; /* Отступы между элементами */
-  justify-content: center; /* Центрируем элементы по горизонтали */
-
-  padding: 0; /* Убираем лишние отступы */
+  ); 
+  gap: 10px; 
+  justify-content: center; 
+  padding: 0; 
 }
 
 .StageList li {
   display: flex;
-  align-items: center; /* Выравниваем элементы по центру */
-  gap: 2rem; /* Отступ между радио-кнопкой и текстом */
-  font-size: 0.9rem;
-  background-color: #21262d; /* Фон для неактивного элемента */
-  border: 1px solid #30363d; /* Граница */
-  border-radius: 4px; /* Скругление углов */
-  padding: 8px 12px; /* Внутренние отступы */
-  cursor: pointer; /* Курсор указывает на возможность взаимодействия */
-  transition: background-color 0.1s ease; /* Плавная анимация при наведении */
-  text-align: center; /* Выравнивание текста по левому краю */
+  align-items: center; 
+  gap: 2rem; 
+  font-size: 0.8rem;
+  background-color: #21262d; 
+  border: 1px solid #30363d; 
+  border-radius: 4px; 
+  padding: 8px 12px; 
+  cursor: pointer; 
+  transition: background-color 0.1s ease; 
+  text-align: center; 
 }
 
 .StageList li label {
-  cursor: pointer; /* Курсор указывает на возможность взаимодействия */
+  cursor: pointer; 
 }
 
 .StageList li.selected {
-  background-color: #2ea043; /* Фон для активного элемента */
-  border-color: #2ea043; /* Цвет границы для активного элемента */
-  color: #ffffff; /* Цвет текста для активного элемента */
+  background-color: #21262d; 
+  border-color: #2ea043; 
+  color: #2ea043; 
 }
 
 input[type="radio"] {
-  display: none; /* Скрываем радио-кнопку */
+  display: none; 
 }

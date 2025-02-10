@@ -4,10 +4,9 @@ import { createProject } from "../api/projects";
 import { Project, CreateProjectInput } from "../types";
 
 export const useCreateProject = () => {
-  return useMutation<Project, Error, CreateProjectInput>({
+  return useMutation<Project, Error, CreateProjectInput>({ // Возвращает 2, принимает Инпут
     mutationFn: createProject,
     onSuccess: () => {
-      // Инвалидируем запросы для обновления списка проектов
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },
   });
