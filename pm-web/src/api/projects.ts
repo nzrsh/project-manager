@@ -3,6 +3,8 @@ import {Project, CreateProjectInput, UpdateProjectInput, Process, UpdateProcessS
 const API_PROJECT_URL = "http://localhost:8000/api/projects"
 const API_PROCESS_URL = "http://localhost:8000/api/processes"
 
+
+// Получение списка проектов
 export const fetchProjects = async (): Promise<Project[]> => {
     try {
         const response = await fetch(`${API_PROJECT_URL}?limit=50`);
@@ -17,6 +19,7 @@ export const fetchProjects = async (): Promise<Project[]> => {
 }
 
 
+// Создание нового проекта
 export const createProject = async (newProject: CreateProjectInput): Promise<Project> => {
     const response = await fetch(API_PROJECT_URL, {
         method: 'POST',
@@ -31,6 +34,8 @@ export const createProject = async (newProject: CreateProjectInput): Promise<Pro
     return response.json();
 }
 
+
+// Обновление проекта по ID
 export const updateProject = async (
     id: number,
     updatedData: UpdateProjectInput // Только обновляемые поля
@@ -49,6 +54,9 @@ export const updateProject = async (
   
     return response.json();
   };
+
+  
+// Удаление проекта по ID
   export const deleteProject = async (id: number): Promise<void> => {
     const response = await fetch(`${API_PROJECT_URL}/${id}`, {
       method: "DELETE",
@@ -59,6 +67,7 @@ export const updateProject = async (
     }
   };
 
+// Обновления этапа процесса по ID
 export const updateProcessStage = async (
   id: number,
   newStage: UpdateProcessStageInput
@@ -77,6 +86,7 @@ export const updateProcessStage = async (
   return response.json();
 }
 
+// Обновление состояния процесса по ID
 export const updateProcessState = async (
   id: number,
   newState: UpdateProcessStateInput

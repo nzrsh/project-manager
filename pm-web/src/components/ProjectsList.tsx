@@ -3,7 +3,7 @@ import { useProjectsQuery } from "../hooks/useProjectsQuery";
 import { useCreateProject } from "../hooks/useCreateProject";
 import { useUpdateProject } from "../hooks/useUpdateProject";
 import { useDeleteProject } from "../hooks/useDeleteProject";
-import styles from "./ProjectList.module.css";
+import styles from "./styles/ProjectList.module.css";
 import { Project } from "../types";
 import ProjectCard from "./ProjectCard";
 import ProjectForm from "./ProjectForm";

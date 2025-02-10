@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import styles from "./ProjectForm.module.css";
+import styles from "./styles/ProjectForm.module.css";
 import { Project } from "../types";
 import ProcessCard from "./ProcessCard";
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Process, stages } from "../types";
 import { useUpdateProcessStage } from "../hooks/useUpdateProcessStage";
 import { useUpdateProcessState } from "../hooks/useUpdateProcessState";
-import styles from "./ProcessCard.module.css";
+import styles from "./styles/ProcessCard.module.css";
 
 interface ProcessCardProps {
   process: Process;
@@ -44,41 +44,38 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
 
   return (
     <div className={styles.ProcessItem}>
+      <label className={styles.toggleSwitch}>
+        <input
+          type="checkbox"
+          checked={processState}
+          onChange={handleProcessStateClick}
+        />
+        <span className={styles.slider}></span>
+      </label>
       <span>
-        {process.title}{" "}
-        <label className={styles.toggleSwitch}>
-          <input
-            type="checkbox"
-            checked={processState}
-            onChange={handleProcessStateClick}
-          />
-          <span className={styles.slider}></span>
-        </label>
+        <strong>{process.title} </strong>
       </span>
-
       <ul className={styles.StageList}>
-        {stages.map((stage, index) => (
-          <li key={index}>
-            <input
-              type="radio"
-              name={process.title}
-              id={stages[index]}
-              checked={selectedIndex === index}
-              onChange={() => handleRadioChange(index)}
-            />
-            <label
-              htmlFor={stages[index]}
-              style={{
-                textDecoration:
-                  selectedIndex !== null && index < selectedIndex
-                    ? "line-through"
-                    : "none",
-              }}
+        {stages.map((stage, index) => {
+          const uniqueId = `${process.id}-${index}`;
+          return (
+            <li
+              key={index}
+              className={selectedIndex === index ? styles.selected : ""}
+              onClick={() => handleRadioChange(index)} // Обработчик клика на весь элемент
             >
-              {stage}
-            </label>
-          </li>
-        ))}
+              <input
+                type="radio"
+                name={process.title}
+                id={uniqueId}
+                checked={selectedIndex === index}
+                onChange={() => {}}
+                style={{ display: "none" }} // Скрываем радио-кнопку
+              />
+              <label htmlFor={uniqueId}>{stage}</label>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
