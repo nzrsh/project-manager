@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Process, stages } from "../types";
 import { useUpdateProcessStage } from "../hooks/useUpdateProcessStage";
 import { useUpdateProcessState } from "../hooks/useUpdateProcessState";
+import styles from "./styles/ProcessCard.module.css";
 
 interface ProcessCardProps {
   process: Process;
-  onUpdate: (updatedProcess: Process) => void;
 }
 
 const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
@@ -13,29 +13,22 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
   const updateProcessState = useUpdateProcessState();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [processState, setProcessState] = useState<boolean>(process.is_active);
+
+
   const handleRadioChange = (index: number) => {
     setSelectedIndex(index);
-    updateProcessStage.mutate(
-      {
-        id: process.id,
-        data: {
-          state_stage: index,
-        },
+    updateProcessStage.mutate({
+      id: process.id,
+      data: {
+        state_stage: index,
       },
-      {
-        onSuccess: () => {
-          console.log("Успешно поменян этап");
-        },
-      }
-    );
+    });
   };
 
-  const handleProcessStateClick = () => {
-    const newState = !processState; // Переключаем состояние
-    setProcessState(newState); // Обновляем локальное состояние
-    console.log("Кликнуто", newState);
 
-    // Вызываем мутацию для обновления состояния на сервере
+  const handleProcessStateClick = () => {
+    const newState = !processState;
+    setProcessState(newState);
     updateProcessState.mutate({
       id: process.id,
       data: {
@@ -44,44 +37,51 @@ const ProcessCard: React.FC<ProcessCardProps> = ({ process }) => {
     });
   };
 
-  const setInitialIndex = () => {
-    console.log("cмонтирован процесс ", process.title);
+  useEffect(() => {
     setSelectedIndex(process.state_stage);
-  };
-
-  useEffect(setInitialIndex, []);
+  }, [process.state_stage]);
 
   return (
-    <>
-      <h3>
-        {process.id} {process.title} {process.state_stage}
-      </h3>
-      <button onClick={handleProcessStateClick}>
-        {processState ? "Выключить" : "Включить"}{" "}
-      </button>
-      <ol>
-        {stages.map((stage, index) => (
-          <li key={index}>
-            <input
-              type="radio"
-              name={process.title}
-              checked={selectedIndex === index}
-              onChange={() => handleRadioChange(index)}
-            />
-            <span
-              style={{
-                textDecoration:
-                  selectedIndex !== null && index < selectedIndex
-                    ? "line-through"
-                    : "none",
-              }}
+    <div className={styles.ProcessItem}>
+
+      <span className={styles.ProcessSwitch}>
+        <label className={styles.toggleSwitch}>
+          <input
+            type="checkbox"
+            checked={processState}
+            onChange={handleProcessStateClick}
+          />
+          <span className={styles.slider}></span>
+        </label>
+      </span>
+
+
+      <strong>{process.title}</strong>
+
+
+      <ul className={styles.StageList}>
+        {stages.map((stage, index) => {
+          const uniqueId = `${process.id}-${index}`;
+          return (
+            <li
+              key={index}
+              className={selectedIndex === index ? styles.selected : ""}
+              onClick={() => handleRadioChange(index)} 
             >
-              {stage}
-            </span>
-          </li>
-        ))}
-      </ol>
-    </>
+              <input
+                type="radio"
+                name={process.title}
+                id={uniqueId}
+                checked={selectedIndex === index}
+                onChange={() => {}}
+                style={{ display: "none" }} 
+              />
+              <label htmlFor={uniqueId}>{stage}</label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

@@ -1,0 +1,140 @@
+.formContainer {
+  width: 50%;
+  height: 100%;
+  padding: 5px;
+  overflow-y: auto;
+  margin: 0;
+  margin-left: 5px;
+}
+
+.createForm {
+  border-bottom: 3px solid #30363d;
+  padding-bottom: 15px;
+  margin-bottom: 0px;
+}
+
+.formContainer form {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; 
+  margin: 0;
+  height: auto; 
+  width: 100%;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.processContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  grid-template-rows: repeat(2, 1fr); 
+  gap: 15px; 
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #58a6ff;
+  box-shadow: 0 0 4px rgba(88, 166, 255, 0.5);
+}
+
+label,
+span {
+  margin: 0; 
+}
+
+.projectTimestamp {
+  display: flex;
+  gap: 10px; 
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+}
+
+.projectTimestamp span {
+  padding: 8px 12px; 
+  border-radius: 4px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #eee; 
+}
+
+.projectTimestamp span strong {
+  color: #007bff; 
+  font-weight: 500;
+}
+
+button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+
+.buttonContainer {
+  display: flex;
+  gap: 15px; 
+  margin-top: 10px; 
+  margin-bottom: 10px;
+}
+
+
+.buttonContainer button {
+  flex: 1; 
+  padding: 10px; 
+  border: none; 
+  border-radius: 4px; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  text-align: center; 
+}
+
+
+.buttonContainer .saveButton {
+  font-size: 1rem;
+  border: 1px solid #0969da;
+  background-color: #212830;
+  color: #0969da;
+}
+
+.buttonContainer .saveButton:hover {
+  background-color: #085cc7; 
+  color: white;
+}
+
+
+.buttonContainer .deleteButton {
+  font-size: 1rem;
+  border: 1px solid #cf222e;
+  background-color: #212830; 
+  color: #cf222e;
+}
+
+.buttonContainer .deleteButton:hover {
+  background-color: #bb1d26;
+  color: white; 
+}
+
+.createButton {
+  border: 1px solid #2da44e;
+  background-color: #212830;
+  font-size: 1rem;
+  border-radius: 6px;
+  color: #2da44e;
+}
+
+.createButton:hover {
+  background-color: #2c974b;
+  font-size: 1rem;
+  border-radius: 6px;
+}

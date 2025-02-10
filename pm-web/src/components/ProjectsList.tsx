@@ -3,111 +3,188 @@ import { useProjectsQuery } from "../hooks/useProjectsQuery";
 import { useCreateProject } from "../hooks/useCreateProject";
 import { useUpdateProject } from "../hooks/useUpdateProject";
 import { useDeleteProject } from "../hooks/useDeleteProject";
+import styles from "./styles/ProjectList.module.css";
 import { Project } from "../types";
 import ProjectCard from "./ProjectCard";
+import ProjectForm from "./ProjectForm";
+import Modal from "./ui/Modal"; // Импортируем компонент модального окна
+import Spinner from "./ui/Spinner";
 
 const ProjectsList = () => {
+  // Работа с query
   const { data: projects, isLoading, error, isError } = useProjectsQuery();
   const createProjectMutation = useCreateProject();
   const updateProjectMutation = useUpdateProject();
   const deleteProjectMutation = useDeleteProject();
 
+  // Состояния для управления формами
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [editProjectId, setEditProjectId] = useState<number | null>(null); // ID проекта для редактирования
+  const [projectNewTitle, setNewProjectTitle] = useState("");
+  const [projectNewDescription, setNewProjectDescription] = useState("");
+  const [editProjectId, setEditProjectId] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Обработка отправки формы
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  // Состояния для модальных окон
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
-    if (editProjectId !== null) {
-      // Если редактируем проект
-      updateProjectMutation.mutate(
-        {
-          id: editProjectId,
-          data: {
-            title: projectTitle,
-            description: projectDescription,
-          },
-        },
-        {
-          onSuccess: () => {
-            setProjectTitle(""); // Очищаем поля
-            setProjectDescription("");
-            setEditProjectId(null); // Выходим из режима редактирования
-          },
-        }
-      );
-    } else {
-      // Если создаём новый проект
-      createProjectMutation.mutate(
-        {
-          title: projectTitle,
-          description: projectDescription,
-        },
-        {
-          onSuccess: () => {
-            setProjectTitle(""); // Очищаем поля
-            setProjectDescription("");
-          },
-        }
-      );
-    }
-  };
-
-  // Обработка редактирования проекта
+  // Обработчик редактирования проекта
   const handleEdit = (project: Project) => {
     setProjectTitle(project.title);
     setProjectDescription(project.description);
-    setEditProjectId(project.id); // Устанавливаем ID проекта для редактирования
+    setEditProjectId(project.id);
   };
 
-  // Обработка удаления проекта
+  // Обработчик удаления проекта
   const handleDelete = (projectId: number) => {
-    if (
-      window.confirm(
-        `Вы уверены, что хотите удалить проект "${
-          projects?.find((p) => p.id === projectId)?.title
-        }"?`
-      )
-    ) {
-      deleteProjectMutation.mutate(projectId);
-    }
+    deleteProjectMutation.mutate(projectId, {
+      onSuccess: () => {
+        setEditProjectId(null);
+        setProjectDescription("");
+        setProjectTitle("");
+      },
+    });
   };
 
-  // Состояния загрузки и ошибок
-  if (isLoading) return <p>Загрузка...</p>;
+  // Обработка изменения заголовка и описания
+  const handleProjectTitleChange = (newTitle: string) => {
+    setProjectTitle(newTitle);
+  };
+  const handleProjectDescriptionChange = (newDescription: string) => {
+    setProjectDescription(newDescription);
+  };
+
+  // Обработка ввода в строку поиска
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleNewProjectTitleChange = (newTitle: string) => {
+    setNewProjectTitle(newTitle);
+  };
+  const handleNewProjectDescriptionChange = (newDescription: string) => {
+    setNewProjectDescription(newDescription);
+  };
+
+  // Обработчик создания проекта
+  const handleCreateSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    createProjectMutation.mutate(
+      {
+        title: projectNewTitle,
+        description: projectNewDescription,
+      },
+      {
+        onSuccess: () => {
+          setNewProjectTitle("");
+          setNewProjectDescription("");
+          setNotificationMessage("Проект успешно создан!");
+          setIsNotificationModalOpen(true); // Показываем уведомление
+        },
+      }
+    );
+  };
+
+  // Обработчик обновления проекта
+  const handleUpdateSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (editProjectId === null) return;
+    updateProjectMutation.mutate(
+      {
+        id: editProjectId,
+        data: {
+          title: projectTitle,
+          description: projectDescription,
+        },
+      },
+      {
+        onSuccess: () => {
+          setNotificationMessage("Проект успешно обновлен!");
+          setIsNotificationModalOpen(true); // Показываем уведомление
+        },
+      }
+    );
+  };
+
+  // Загрузка или ошибка
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <Spinner />
+        <p>Загрузка проектов...</p>
+      </div>
+    );
+  }
   if (isError) return <p>Ошибка! {(error as any)?.message}</p>;
+
+  // Текущий проект и фильтрация
+  const currentProject =
+    editProjectId !== null
+      ? projects?.find((p) => p.id === editProjectId) || null
+      : null;
+  const filteredProjects = projects
+    ?.filter((project) =>
+      project.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .reverse();
 
   return (
     <div>
-      <h2>Список проектов</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Название проекта"
-          value={projectTitle}
-          onChange={(e) => setProjectTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Описание"
-          value={projectDescription}
-          onChange={(e) => setProjectDescription(e.target.value)}
-        />
-        <button type="submit">{editProjectId ? "Обновить" : "Создать"}</button>
-      </form>
-      <ul>
-        {projects?.map((project) => (
-          <li key={project.id}>
-            <ProjectCard
-              project={project}
-              handleEdit={handleEdit}
-              handleDelete={handleDelete}
+      {/* Модальное окно уведомлений */}
+      <Modal
+        isOpen={isNotificationModalOpen}
+        title="Успешно!"
+        message={notificationMessage}
+        onCancel={() => setIsNotificationModalOpen(false)}
+        showConfirmButton={false} // Отключаем кнопку "Подтвердить"
+      />
+
+      <div className={styles.mainContainer}>
+        <div className={styles.projectList}>
+          <div className={styles.searchAndCreateContainer}>
+            <input
+              type="text"
+              placeholder="Поиск проектов..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className={styles.searchInput}
             />
-          </li>
-        ))}
-      </ul>
+          </div>
+          <ul>
+            {filteredProjects?.map((project) => (
+              <li
+                key={project.id}
+                onClick={() => handleEdit(project)}
+                className={`${styles.projectItem} ${
+                  editProjectId === project.id ? styles.active : ""
+                }`}
+              >
+                <ProjectCard
+                  project={project}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <ProjectForm
+          onSubmitCreate={handleCreateSubmit}
+          onSubmitUpdate={handleUpdateSubmit}
+          projectTitle={projectTitle}
+          projectDescription={projectDescription}
+          projectNewTitle={projectNewTitle}
+          projectNewDescription={projectNewDescription}
+          onTitleChange={handleProjectTitleChange}
+          onDescriptionChange={handleProjectDescriptionChange}
+          onNewTitleChange={handleNewProjectTitleChange}
+          onNewDescriptionChange={handleNewProjectDescriptionChange}
+          editProjectId={editProjectId}
+          currentProject={currentProject}
+          onDelete={handleDelete}
+        />
+      </div>
     </div>
   );
 };

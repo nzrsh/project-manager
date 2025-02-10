@@ -1,0 +1,122 @@
+.mainContainer {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  width: 95vw; 
+  height: 95vh; 
+  border: 3px solid #30363d;
+  border-radius: 6px;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: #010409;
+}
+
+.mainHeader {
+  text-align: center;
+}
+
+.projectList {
+  border-right: 1px solid #30363d;
+  padding: 10px;
+  width: 50%;
+  height: 100%;
+  padding: 5px;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+
+.projectList ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.projectList ul li {
+  width: 100%;
+}
+
+.searchAndCreateContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-top: 15px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.createButton {
+  background-color: #28a745; 
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createButton:hover {
+  background-color: #218838; 
+}
+
+.projectFormContainer {
+  margin-bottom: 20px;
+}
+
+.projectList {
+  flex: 1;
+}
+
+.projectItem {
+  margin-bottom: 10px;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s ease; 
+}
+
+.projectItem:hover {
+  border-color: #58a6ff; 
+  box-shadow: 0 0 4px rgba(88, 166, 255, 0.5); 
+  border-radius: 4px;
+}
+
+.projectItem.active {
+  border: 2px solid #58a6ff; 
+  border-radius: 6px; 
+  outline: none;
+  box-shadow: 0 0 8px rgba(88, 166, 255, 0.7); 
+  transform: scaleY(1.2); 
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  color: #c9d1d9;
+  margin-top: 50%;
+}
+
+.errorCard {
+  background-color: #da3633; 
+  color: #ffffff;
+  padding: 16px;
+  border-radius: 4px;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 400px;
+}

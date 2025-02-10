@@ -1,0 +1,108 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modalContent {
+  background-color: #010409;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  animation: slideUp 0.3s ease-in-out;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #ccc;
+}
+
+.modalMessage {
+  font-size: 0.875rem;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalButton {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #2c974b;
+  background-color: #212830;
+  color: #2c974b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Кнопка удаления */
+.modalButton.deleteButton {
+  background-color: #212830; /* Серый фон */
+  color: #d73a49; /* Красный текст */
+  border-color: #d73a49; /* Красная граница */
+}
+
+.modalButton.deleteButton:hover {
+  background-color: #d73a49; /* Красный фон */
+  color: #ccc; /* Светлый текст */
+}
+
+/* Кнопка отмены для окна удаления */
+.modalButton.cancelButton {
+  background-color: #212830; /* Серый фон */
+  color: #2da44e; /* Зелёный текст */
+  border-color: #2da44e; /* Зелёная граница */
+}
+
+.modalButton.cancelButton:hover {
+  background-color: #2c974b; /* Зелёный фон */
+  color: #ccc; /* Светлый текст */
+}
+
+/* Одиночная кнопка "ОК" */
+.modalActions.singleButton {
+  justify-content: center; /* Центрируем кнопку */
+}
+
+.modalActions.singleButton .modalButton {
+  width: 100%; /* Полная ширина */
+  margin: 0 auto; /* Центрирование */
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

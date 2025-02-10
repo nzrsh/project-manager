@@ -1,0 +1,110 @@
+.ProcessItem {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px; 
+}
+
+
+.ProcessSwitch {
+  position: absolute; 
+  top: 10px; 
+  left: 10px; 
+}
+
+.toggleSwitch {
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #484f58;
+  border: 1px solid #30363d;
+  border-radius: 18px;
+  transition: all 0.3s ease;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background-color: #c9d1d9;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+input:checked + .slider {
+  background: linear-gradient(135deg, #2ea043, #1f883d);
+  border-color: #2ea043;
+}
+
+input:checked + .slider::before {
+  transform: translate(18px, -50%);
+  background-color: #ffffff;
+}
+
+
+.ProcessItem strong {
+  margin-top: 10px; 
+  display: block; 
+  text-align: center; 
+}
+
+.StageList {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    auto
+  ); 
+  gap: 10px; 
+  justify-content: center; 
+  padding: 0; 
+}
+
+.StageList li {
+  display: flex;
+  align-items: center; 
+  gap: 2rem; 
+  font-size: 0.8rem;
+  background-color: #21262d; 
+  border: 1px solid #30363d; 
+  border-radius: 4px; 
+  padding: 8px 12px; 
+  cursor: pointer; 
+  transition: background-color 0.1s ease; 
+  text-align: center; 
+}
+
+.StageList li label {
+  cursor: pointer; 
+}
+
+.StageList li.selected {
+  background-color: #21262d; 
+  border-color: #2ea043; 
+  color: #2ea043; 
+}
+
+input[type="radio"] {
+  display: none; 
+}

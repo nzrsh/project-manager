@@ -1,11 +1,10 @@
 import "./App.css";
-import Home from "./pages/Home";
+import ProjectsList from "./components/ProjectsList";
 
 function App() {
   return (
     <>
-      <h2>Домашняя</h2>
-      <Home />
+      <ProjectsList />
     </>
   );
 }
